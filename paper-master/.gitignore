@@ -1,0 +1,16 @@
+
+*.pyc
+*.swp
+*.bak
+*.o
+
+atom.rss
+_key
+me.html
+settings.py
+
+
+env
+.env
+
+tmp

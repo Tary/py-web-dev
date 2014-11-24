@@ -1,0 +1,41 @@
+
+    <div>
+        <div class="post-left">
+            <div class="group">
+                {% with localtime = post.create_at_localtime %}
+                    <p>{{ localtime|format_date("%F") }}</p>
+                    <p>{{ localtime|format_date("%R") }}</p>
+                    <p class="focus">{{ localtime|format_date("%A") }}</p>
+                {% endwith %}
+            </div>
+            
+            <div class="group">
+                <p>views</p>
+                <p class="focus">{{ post.view_count }}</p>
+            </div>
+            
+                <p>tags</p>
+                {% for t in post.tags %}
+                    <p><a href="/tag/{{ t.name }}">{{ t.name }}</a></p>
+                {% endfor %}
+        </div>
+        
+        <div class="post-right">
+            <div class="post-title">
+                <h1>
+                    {% if index %}
+                        <a href="/blog/{{ post.title }}">{{ post.title }}</a>
+                    {% else %}
+                        {{ post.title }}
+                    {% endif %}
+                </h1>
+            </div>
+            
+            
+            <div class="post-content">
+                {{ post.content }}
+            </div>
+        </div>
+        <div class="clear-both"></div>
+    
+    </div>

@@ -1,0 +1,27 @@
+<div id="header">
+    <div id="header-top">
+        <div id="blog-title">
+            {{ blog_title }}
+        </div>
+        <div id="blog-sub">
+            {{ blog_sub_title }}
+        </div>
+    </div>
+    <div id="nav">
+        <ul>
+            <li><a href="/">HOME</a></li>
+            <li><a href="/archive">ARCHIVE</a></li>
+            <li>
+                <span>TAGS</span>
+                <ul>
+                    {% for t in tags %}
+                        <li><a href="/tag/{{ t.name }}"><span>{{ t.name }}</span>({{ t.posts_count }})</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+                
+            <li><a href="{{ github_link }}" target="_blank">GITHUB</a></li>
+            <li><a href="/atom.rss">RSS</a></li>
+        </ul>
+    </div>
+</div>
