@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<update xmlns="http://ns.riaspace.com/air/framework/update/description/1.1">
+	<exe>
+		<versionNumber>0.3.1</versionNumber>
+		<url>host</url>
+		<description><![CDATA[log]]></description>
+	</exe>
+</update>

@@ -2,41 +2,21 @@
 
 from sqlite3 import dbapi2 as sqlite3
 
+
 class LogDatabaseTool(object):
-    u"""
-    数据库读写工具
-    tool = DataBaseTool('a.db')
-    tool.init_db(open('schema.sql', 'r'))
-    tool.add_log('Client', 2232,'AAAAA')
-    aa = tool.get_log('Client', 2235)
-
-    print "\\n".join(aa)
-    """
-    def __init__(self, file_path):
-        self.db = None
-        self.file_path = file_path
-
-    def get_db(self):
-        """Opens a new database connection if there is none yet for the
-        current application context.
-        """
-        if self.db is not None:
-            return self.db
-        sqlite_db = sqlite3.connect(self.file_path)
-        sqlite_db.row_factory = sqlite3.Row
-        self.db = sqlite_db
-        return sqlite_db
+    def __init__(self, database):
+        self.database = database
 
     def init_db(self, schema_file):
-        u"""
-        初始化数据库
-        :type schema_file: file
-        :param schema_file: 用于初始化数据库的sql表的文件 
-        """
-        db = self.get_db()
-        with schema_file:
+        if schema_file is not None:
+            db = self.get_db()
             db.cursor().executescript(schema_file.read())
-        db.commit()
+            db.commit()
+
+    def get_db(self):
+        cur_db = sqlite3.connect(self.database)
+        cur_db.row_factory = sqlite3.Row
+        return cur_db
 
     def add_log(self, project, version, log):
         u"""
