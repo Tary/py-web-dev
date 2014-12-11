@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div>
+        {% for message in get_flashed_messages() %}
+        <div class=flash><a href="{{ message }}">{{message}}</a><br/></div>
+
+        {% endfor %}
+    </div>
+{% endblock %}

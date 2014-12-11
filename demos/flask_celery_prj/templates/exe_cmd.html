@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block body %}
+<script type=text/javascript>
+    var $GET_DATA_TIMER_ID = 0;
+    function get_data()
+    {
+        $.getJSON($SCRIPT_ROOT + '/result_exe_cmd_js/', {'task_id':'{{key}}'}, function(data) {
+            $('#result').html(data.result);
+            clearInterval($GET_DATA_TIMER_ID)
+        });
+    };
+    $GET_DATA_TIMER_ID = setInterval(get_data,4000);
+    $(document).ready(get_data);
+</script>
+  <div class="documentwrapper">
+      <span id=result class="bodywrapper">加载中请稍后...</span>
+  </div>
+
+{% endblock %}

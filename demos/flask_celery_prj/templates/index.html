@@ -1,0 +1,8 @@
+{% extends "layout.html" %}
+{% block body %}
+    <div class="documentwrapper">
+        {% for message in get_flashed_messages() %}
+        <div class=flash_task><a href="{{ message.cmd }}">{{message.desc}}</a><br/></div>
+        {% endfor %}
+    </div>
+{% endblock %}
