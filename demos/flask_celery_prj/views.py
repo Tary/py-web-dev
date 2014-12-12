@@ -11,20 +11,14 @@ from flask import flash, render_template, jsonify
 from factory_celery import _app
 app = _app
 
-from config_manager import load_cfg
+from config_manager import load_sub_cfg
 
 @app.route("/")
-def hello_world(x=16, y=16):
-    x = int(request.args.get("x", x))
-    y = int(request.args.get("y", y))
-    res = add.apply_async((x, y))
-    context = {"id": res.task_id, "x": x, "y": y}
+def hello_world():
     return """Hello world---: \
-                add(%(x)s, %(y)s) = \
-                <a href="/result/%(id)s">%(id)s</a><br/>\
                 <a href="/load_config/">加载配置文件</a><br/>\
                 <a href="/exe_cmd/">执行命令行</a><br/>\
-                """ % context
+                """
 
 @app.route("/load_config/")
 def load_config():
@@ -45,14 +39,28 @@ def exe_cmd():
         'index.html'
     )
 
-@app.route("/exe_cmd/<cmd>")
+TASKS_DIC = {}
+
+@app.route("/exe_cmd/<path:cmd>")
 def exe_cmd_imp(cmd):
     if cmd is None:
         return "None cmd"
+    task_id = task_cmd.apply_async([cmd]).task_id
+    return render_template('exe_cmd.html', key = task_id)
 
-    res2 = task_cmd.apply_async([cmd])
-    #return """<a href="/result_exe_cmd/%s">查看结果</a><br/>""" % res2.task_id
-    return render_template('exe_cmd.html', key = res2.task_id)
+@app.route("/exe_cmd_js/")
+def exe_cmd_imp_js():
+    global TASKS_DIC
+    cmd_id = request.args.get('cmd_id', None, type=str)
+    if cmd_id is None:
+        return "None cmd"
+    if TASKS_DIC.has_key(cmd_id):
+        task_id = TASKS_DIC[cmd_id]
+    else:
+        cmd_group = configs[cmd_id]
+        task_id = task_cmd.apply_async([cmd_group.cmd]).task_id
+        TASKS_DIC[cmd_id] = task_id
+    return render_template('exe_cmd.html', key = task_id)
 
 @app.route("/result/<task_id>")
 def show_result(task_id):
@@ -89,6 +97,6 @@ def result_exe_cmd_js():
 if __name__ == "__main__":
     global configs
     app.config.from_object('SETTINGS')
-    cfgs, root_dir = load_cfg()
+    cfgs, root_dir = load_sub_cfg()
     configs = cfgs
     app.run(debug=True)

@@ -1,8 +1,33 @@
 {% extends "layout.html" %}
 {% block body %}
+<script>
+$(document).ready(function(){
+    $("input").each(function(){
+    //$(this).hide();
+    });
+
+    $("button").click(function(){
+        $.get($SCRIPT_ROOT + '/exe_cmd_js/',
+        { 'cmd_id':this.id },
+        function(data,status){
+            //alert("Data: " + data + "\nStatus: " + status);
+
+            });
+    });
+});
+
+
+    </script>
     <div class="documentwrapper">
         {% for message in get_flashed_messages() %}
-        <div class=flash_task><a href="{{ message.cmd }}">{{message.desc}}</a><br/></div>
+        <div class=flash_task><!--a href="{{ message.cmd }}">{{message.desc}}</a-->
+            <form method="get" action="/exe_cmd_js" class="task_form">
+                {{ message.desc }}
+                <input type="text"  name="cmd_id" value="{{ message.id }}" class="task_id"/>
+                <button id='{{ message.id }}' type="submit" class="task_btn">执行</button>
+            </form>
+        <br/>
+        </div>
         {% endfor %}
     </div>
 {% endblock %}

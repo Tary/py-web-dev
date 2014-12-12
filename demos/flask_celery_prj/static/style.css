@@ -40,4 +40,16 @@ background: #CEE5F5;
 padding: 0.5em;
 box-shadow: 1px 1px 2px 1px #888888;
 margin: 4px 4px 4px 4px;
+padding: 4px 4px 4px 4px;
+}
+
+.task_id {
+display: none;
+}
+
+.task_form  {
+height: 4px;
+}
+.task_btn {
+float: right;
 }
